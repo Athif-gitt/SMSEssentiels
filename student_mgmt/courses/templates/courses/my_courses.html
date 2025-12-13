@@ -12,6 +12,14 @@
         <div class="card shadow h-100">
             <div class="card-body">
                 <h5 class="card-title">{{ enrollment.course.title }}</h5>
+                {% if enrollment.course.logo %}
+    <img 
+        src="{{ enrollment.course.logo.url }}" 
+        alt="{{ enrollment.course.title }}"
+        class="img-fluid rounded shadow-sm"
+        style="max-height: 80px; object-fit: contain;"
+    >
+{% endif %}
                 <p class="card-text">{{ enrollment.course.description }}</p>
                 <p class="small">Enrolled on: {{ enrollment.created_at|date:"M d, Y" }}</p>
             </div>

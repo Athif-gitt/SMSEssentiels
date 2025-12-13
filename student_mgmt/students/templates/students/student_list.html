@@ -13,8 +13,12 @@
     <div class="card-body">
         <form method="get" class="row g-3">
             <div class="col-md-10">
-                <input type="text" name="q" class="form-control" placeholder="Search by name or roll number"
+                <input type="text" name="q" class="form-control placeholder-light" placeholder="Search by name or roll number"
                     value="{{ query }}">
+                    <style>
+                        .placeholder-light::placeholder {
+    color: gray;}
+                    </style>
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-secondary w-100">Search</button>

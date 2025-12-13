@@ -1,8 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
-from django.core.mail import send_mail
-from django.conf import settings
+
 from .models import Course, Enrollment
 from .forms import CourseForm, EnrollmentForm
 from students.models import Student
@@ -37,8 +36,10 @@ def course_create(request):
 def course_update(request, pk):
     course = get_object_or_404(Course, pk=pk)
     if request.method == 'POST':
-        form = CourseForm(request.POST, instance=course)
+        form = CourseForm(request.POST, request.FILES, instance=course)
         if form.is_valid():
+            if 'logo' not in request.FILES:
+                form.instance.logo = course.logo
             form.save()
             messages.success(request, 'Course updated successfully.')
             return redirect('courses:course_list')
@@ -66,22 +67,7 @@ def assign_course(request):
             student = enrollment.student
             course = enrollment.course
             
-            # Send Email
-            subject = 'New Course Assigned'
-            message = f'You have been assigned to the course {course.title}'
-            recipient_list = [student.user.email]
-            
-            try:
-                send_mail(
-                    subject, 
-                    message, 
-                    settings.EMAIL_HOST_USER, 
-                    recipient_list, 
-                    fail_silently=False
-                )
-                messages.success(request, f'Course assigned and email sent to {student.user.email}.')
-            except Exception as e:
-                messages.warning(request, f'Course assigned but failed to send email: {e}')
+            messages.success(request, f'Course assigned successfully to {student.user.email}.')
             
             return redirect('courses:course_list')
     else:
@@ -90,7 +76,6 @@ def assign_course(request):
 
 @login_required
 def my_courses(request):
-    # For students to view their courses
     if hasattr(request.user, 'student'):
         enrollments = Enrollment.objects.filter(student=request.user.student)
         return render(request, 'courses/my_courses.html', {'enrollments': enrollments})

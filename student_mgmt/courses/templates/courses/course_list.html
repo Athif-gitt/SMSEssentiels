@@ -17,6 +17,14 @@
             <div class="card-body">
                 <h5 class="card-title">{{ course.title }}</h5>
                 <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                {% if course.logo %}
+                <img src="{{ course.logo.url }}" 
+        alt="{{ course.title }}"
+        class="img-fluid rounded shadow-sm"
+        style="max-height: 80px; object-fit: contain;">
+                {% else %}
+                <p>No Images</p>
+                {% endif %}
             </div>
             <div class="card-footer bg-white border-top-0">
                 <a href="{% url 'courses:course_update' course.pk %}" class="btn btn-sm btn-warning">Edit</a>

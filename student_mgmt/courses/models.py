@@ -1,9 +1,15 @@
 from django.db import models
 from students.models import Student
 
+
 class Course(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
+    logo = models.ImageField(
+        upload_to='course_logos/',
+        blank=True,
+        null=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

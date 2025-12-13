@@ -62,9 +62,18 @@ def student_create(request):
                 first_name=form.cleaned_data['first_name'],
                 last_name=form.cleaned_data['last_name']
             )
-            student = form.save(commit=False)
-            student.user = user
-            student.save()
+            
+            # The post_save signal on User creates a Student instance.
+            # We need to update that instance instead of creating a new one.
+            if hasattr(user, 'student'):
+                student = user.student
+                form = StudentForm(request.POST, request.FILES, instance=student)
+                if form.is_valid():
+                    form.save()
+            else:
+                student = form.save(commit=False)
+                student.user = user
+                student.save()
             messages.success(request, 'Student created successfully. Login with Roll No & password123')
             return redirect('students:student_list')
     else:
