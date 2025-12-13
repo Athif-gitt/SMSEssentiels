@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    {% if student.profile_pic %}
+                    <img src="{{ student.profile_pic.url }}" alt="Profile Pic" class="img-fluid rounded-circle mb-3"
+                        style="max-height: 200px;">
+                    {% else %}
+                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                        style="width: 150px; height: 150px;">
+                        <span>No Image</span>
+                    </div>
+                    {% endif %}
+                    <h4>{{ student.user.get_full_name }}</h4>
+                    <p class="text-muted">{{ student.roll_number }}</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'students:student_update' student.pk %}" class="btn btn-warning">Edit
+                            Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5>Student Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-3 fw-bold">Department</div>
+                        <div class="col-sm-9">{{ student.department }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3 fw-bold">Year of Admission</div>
+                        <div class="col-sm-9">{{ student.year_of_admission }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3 fw-bold">Date of Birth</div>
+                        <div class="col-sm-9">{{ student.date_of_birth }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3 fw-bold">Email</div>
+                        <div class="col-sm-9">{{ student.user.email }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12 text-end">
+            <a href="{% url 'students:student_list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mb-3">
+    <div class="col-12">
+        <h2>My Courses</h2>
+    </div>
+</div>
+
+<div class="row">
+    {% for enrollment in enrollments %}
+    <div class="col-md-6 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ enrollment.course.title }}</h5>
+                <p class="card-text">{{ enrollment.course.description }}</p>
+                <p class="small">Enrolled on: {{ enrollment.created_at|date:"M d, Y" }}</p>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-warning">You are not enrolled in any courses yet.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

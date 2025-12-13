@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2>Student Dashboard</h2>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">My Profile</div>
+                <div class="card-body">
+                    <h5 class="card-title">Welcome, {{ user.first_name }} {{ user.last_name }}</h5>
+                    <p class="card-text"><strong>Username:</strong> {{ user.username }}</p>
+                    <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+                    <p class="card-text"><strong>Role:</strong> {{ user.profile.role|title }}</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">My Courses</div>
+                <div class="card-body">
+                    <p>Check your assigned courses.</p>
+                    <a href="{% url 'courses:my_courses' %}" class="btn btn-primary">View My Courses</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
