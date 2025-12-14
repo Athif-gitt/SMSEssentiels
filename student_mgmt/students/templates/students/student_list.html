@@ -34,7 +34,7 @@
                 <th>Profile</th>
                 <th>Roll No</th>
                 <th>Name</th>
-                <th>Department</th>
+                <th>Course</th>
                 <th>Admission Year</th>
                 <th>Actions</th>
             </tr>
@@ -51,7 +51,17 @@
                 </td>
                 <td>{{ student.roll_number }}</td>
                 <td>{{ student.user.get_full_name }}</td>
-                <td>{{ student.department }}</td>
+                <td>
+    {% if student.enrollments.exists %}
+        {% for enrollment in student.enrollments.all %}
+            <span class="badge bg-primary mb-1">
+                {{ enrollment.course.title }}
+            </span>
+        {% endfor %}
+    {% else %}
+        <span class="text-muted">No course</span>
+    {% endif %}
+</td>
                 <td>{{ student.year_of_admission }}</td>
                 <td>
                     <a href="{% url 'students:student_detail' student.pk %}"
