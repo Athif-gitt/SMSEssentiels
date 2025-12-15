@@ -41,14 +41,8 @@ def student_create(request):
     if request.method == 'POST':
         form = StudentForm(request.POST, request.FILES)
         if form.is_valid():
-            # We need to create a User manually or expect one selected?
-            # Requirement says "Add student". Logic usually implies creating a user too.
-            # But here we might just link to existing user or create one.
-            # To simplify, we'll create a dummy user or expect user creation logic.
-            # For this "complete SMS", let's assume we create a user with default password 'password123'
-            # and username as roll_number for simplicity, or we should have a combined form.
-            # The Form above updates user, but save() expects instance.pk for update.
-            # Let's handle creation:
+            # Create a user for the student
+
             
             username = form.cleaned_data['roll_number']
             if User.objects.filter(username=username).exists():
@@ -63,8 +57,8 @@ def student_create(request):
                 last_name=form.cleaned_data['last_name']
             )
             
-            # The post_save signal on User creates a Student instance.
-            # We need to update that instance instead of creating a new one.
+            # Update the student instance created by the signal
+
             if hasattr(user, 'student'):
                 student = user.student
                 form = StudentForm(request.POST, request.FILES, instance=student)

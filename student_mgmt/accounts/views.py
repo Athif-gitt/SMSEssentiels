@@ -6,9 +6,7 @@ from django.contrib import messages
 from .forms import UserRegistrationForm
 from .models import Profile
 from courses.models import Enrollment
-# from django.core.mail import send_mail
-# from django.http import HttpResponse
-# from django.conf import settings
+
 
 def register_view(request):
     if request.method == 'POST':
@@ -18,7 +16,6 @@ def register_view(request):
             user.set_password(form.cleaned_data['password'])
             user.save()
             
-            # Update role in profile
             role = form.cleaned_data.get('role')
             user.profile.role = role
             user.profile.save()
@@ -37,10 +34,9 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
-                # name = user.first_name
-                # user.courses = Enrollment.objects.filter(student=name)
                 login(request, user)
                 messages.info(request, f'You are now logged in as {username}.')
+
                 return redirect('accounts:dashboard')
             else:
                 messages.error(request, 'Invalid username or password.')
@@ -63,16 +59,5 @@ def dashboard_view(request):
     else:
         return render(request, 'accounts/student_dashboard.html')
     
-# def test_email(request):
-#     try:
-#         send_mail(
-#             subject="Django Email Test",
-#             message="If you received this email, SMTP is working!",
-#             from_email=settings.DEFAULT_FROM_EMAIL,
-#             recipient_list=[settings.EMAIL_HOST_USER],
-#             fail_silently=False,
-#         )
-#         return HttpResponse("✅ Test email sent successfully!")
-#     except Exception as e:
-#         return HttpResponse(f"❌ Error: {e}")
+
 

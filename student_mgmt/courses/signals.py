@@ -7,7 +7,7 @@ from .models import Enrollment
 
 @receiver(post_save, sender=Enrollment)
 def send_course_assignment_email(sender, instance, created, **kwargs):
-    if created:  # Only send when a new enrollment is created
+    if created:  
         student = instance.student
         course = instance.course
         
